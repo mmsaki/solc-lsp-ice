@@ -1,0 +1,28 @@
+project: v4-core
+file: src/libraries/Pool.sol
+line: 109
+col: 15
+iterations: 1
+warmup: 1
+timeout: 10
+index_timeout: 15
+output: ice/
+readme:
+  - ice/README.md
+
+benchmarks:
+  - initialize
+  - textDocument/rename # ICE
+  - textDocument/semanticTokens/full # ICE
+  
+methods:
+  textDocument/rename:
+    newName: NewName
+  
+# LSP servers
+servers:
+  - label: solc
+    description: Official Solidity compiler LSP
+    link: https://docs.soliditylang.org
+    cmd: solc
+    args: ["--lsp"]
