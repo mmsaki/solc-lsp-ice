@@ -1,7 +1,5 @@
 # Solc LSP InternalCompilerError
 
-<https://www.youtube.com/watch?v=nwLf5o3cBlk>
-
 `solc --lsp` crashes with an `InternalCompilerError` when performing a **rename** (`textDocument/rename`) or requesting **semantic tokens** (`textDocument/semanticTokens/full`) on [`./Pool.sol`](./Pool.sol).
 
 ## Reproduce
