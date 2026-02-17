@@ -20,7 +20,7 @@ solc-select use 0.8.33
 git clone https://github.com/mmsaki/solc-lsp-ice.git
 ```
 
-3. Open `src/libraries/Pool.sol` in any editor configured to use `solc --lsp` as the language server
+3. Open `./Pool.sol` in any editor configured to use `solc --lsp` as the language server
 
 4. Try to **rename** any symbol (e.g. the contract name or a function parameter) — the LSP server crashes with:
 
