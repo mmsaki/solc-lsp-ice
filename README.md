@@ -2,7 +2,7 @@
 
 <https://www.youtube.com/watch?v=nwLf5o3cBlk>
 
-`solc --lsp` crashes with an `InternalCompilerError` when performing a **rename** (`textDocument/rename`) or requesting **semantic tokens** (`textDocument/semanticTokens/full`) on [`src/libraries/Pool.sol`](src/libraries/Pool.sol) from [uniswap/v4-core](https://github.com/uniswap/v4-core).
+`solc --lsp` crashes with an `InternalCompilerError` when performing a **rename** (`textDocument/rename`) or requesting **semantic tokens** (`textDocument/semanticTokens/full`) on [`./Pool.sol`](./Pool.sol).
 
 ## Reproduce
 
