@@ -51,7 +51,6 @@ InternalCompilerError: Parsing not yet performed.
 ## Environment
 
 - **solc**: 0.8.33
-- **File**: `src/libraries/Pool.sol` (from [uniswap/v4-core](https://github.com/uniswap/v4-core))
 
 ## Automated Reproduction (optional)
 
