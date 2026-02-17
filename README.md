@@ -10,17 +10,11 @@ cargo install lsp-bench
 
 ## Set Up
 
-1. Clone this repo with submodules
+1. Clone this repo
 
 ```
-git clone --recurse-submodules https://github.com/mmsaki/solc-lsp-ice.git
+git clone https://github.com/mmsaki/solc-lsp-ice.git
 ```
-
-> If you already cloned without `--recurse-submodules`, run:
->
-> ```
-> git submodule update --init --recursive
-> ```
 
 2. Run LSP benchmark
 
@@ -35,17 +29,17 @@ or use the `replay` command directly:
 
 ```sh
 # InternalCompilerError 1
-lsp-bench replay --server "solc --lsp" --project v4-core --input '{"id":1,"jsonrpc":"2.0","method":"textDocument/rename","params":{"newName":"NewName","position":{"character":15,"line":109},"textDocument":{"uri":"file:///path/to/solc-lsp-ice/v4-core/src/libraries/Pool.sol"}}}'
+lsp-bench replay --server "solc --lsp" --project . --input '{"id":1,"jsonrpc":"2.0","method":"textDocument/rename","params":{"newName":"NewName","position":{"character":15,"line":109},"textDocument":{"uri":"file:///Users/meek/developer/argotorg/lsp-ice/Pool.sol"}}}'
 # InternalCompilerError 2
-lsp-bench replay --server "solc --lsp" --project v4-core --input '{"id":1,"jsonrpc":"2.0","method":"textDocument/semanticTokens/full","params":{"textDocument":{"uri":"file:///path/to/solc-lsp-ice/v4-core/src/libraries/Pool.sol"}}}'
+lsp-bench replay --server "solc --lsp" --project . --input '{"id":1,"jsonrpc":"2.0","method":"textDocument/semanticTokens/full","params":{"textDocument":{"uri":"file:///Users/meek/developer/argotorg/lsp-ice/Pool.sol"}}}'
 ```
 
 Responses
 
 ```
-  server solc --lsp
-  method textDocument/semanticTokens/full
-  file /Users/meek/developer/argotorg/lsp-ice/v4-core/src/libraries/Pool.sol
+server solc --lsp
+  method textDocument/rename
+  file /Users/meek/developer/argotorg/lsp-ice/Pool.sol
 
 Spawning server...
 Initializing...
@@ -64,8 +58,8 @@ Sending request...
 
 ```
   server solc --lsp
-  method textDocument/rename
-  file /Users/meek/developer/mmsaki/solidity-lsp-benchmarks/v4-core/src/libraries/Pool.sol
+  method textDocument/semanticTokens/full
+  file /Users/meek/developer/argotorg/lsp-ice/Pool.sol
 
 Spawning server...
 Initializing...
