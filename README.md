@@ -2,76 +2,72 @@
 
 <https://youtu.be/AhqayOtYzWs>
 
-Install lsp-bench from [github releases](https://github.com/mmsaki/solidity-lsp-benchmarks/releases/tag/v0.2.2) or crates.io
+`solc --lsp` crashes with an `InternalCompilerError` when performing a **rename** (`textDocument/rename`) or requesting **semantic tokens** (`textDocument/semanticTokens/full`) on [`src/libraries/Pool.sol`](src/libraries/Pool.sol) from [uniswap/v4-core](https://github.com/uniswap/v4-core).
+
+## Reproduce
+
+1. Install solc v0.8.33
 
 ```
-cargo install lsp-bench
+pip install solc-select
+solc-select install 0.8.33
+solc-select use 0.8.33
 ```
 
-## Set Up
-
-1. Clone this repo
+2. Clone this repo
 
 ```
 git clone https://github.com/mmsaki/solc-lsp-ice.git
 ```
 
-2. Run LSP benchmark
+3. Open `src/libraries/Pool.sol` in any editor configured to use `solc --lsp` as the language server
+
+4. Try to **rename** any symbol (e.g. the contract name or a function parameter) — the LSP server crashes with:
 
 ```
+InternalCompilerError: Parsing not yet performed.
+```
+
+## Error Response
+
+```json
+{
+  "error": {
+    "code": -32603,
+    "message": "Unhandled exception: /solidity/libsolidity/interface/CompilerStack.cpp(1249): Throw in function const SourceUnit &solidity::frontend::CompilerStack::ast(const std::string &) const\nDynamic exception type: boost::wrapexcept<solidity::langutil::InternalCompilerError>\nstd::exception::what: Parsing not yet performed.\n[solidity::util::tag_comment*] = Parsing not yet performed.\n"
+  },
+  "id": 2,
+  "jsonrpc": "2.0"
+}
+```
+
+## Affected LSP Methods
+
+| Method | Result |
+|---|---|
+| `textDocument/rename` | InternalCompilerError |
+| `textDocument/semanticTokens/full` | InternalCompilerError |
+
+## Environment
+
+- **solc**: 0.8.33
+- **File**: `src/libraries/Pool.sol` (from [uniswap/v4-core](https://github.com/uniswap/v4-core))
+
+## Automated Reproduction (optional)
+
+You can also reproduce this with [lsp-bench](https://github.com/mmsaki/solidity-lsp-benchmarks):
+
+```
+cargo install lsp-bench
 lsp-bench --config test.yaml
 ```
 
-or use the `replay` command directly:
-
-> **Note:** If using the CLI commands below, update the `uri` path to match your local system.
+> **Note:** If using the `replay` CLI command directly, update the `uri` path to match your local system.
 > Replace `/path/to/solc-lsp-ice` with the absolute path to where you cloned this repo.
 
 ```sh
-# InternalCompilerError 1
-lsp-bench replay --server "solc --lsp" --project . --input '{"id":1,"jsonrpc":"2.0","method":"textDocument/rename","params":{"newName":"NewName","position":{"character":15,"line":109},"textDocument":{"uri":"file:///Users/meek/developer/argotorg/lsp-ice/Pool.sol"}}}'
-# InternalCompilerError 2
-lsp-bench replay --server "solc --lsp" --project . --input '{"id":1,"jsonrpc":"2.0","method":"textDocument/semanticTokens/full","params":{"textDocument":{"uri":"file:///Users/meek/developer/argotorg/lsp-ice/Pool.sol"}}}'
-```
-
-Responses
-
-```
-server solc --lsp
-  method textDocument/rename
-  file /Users/meek/developer/argotorg/lsp-ice/Pool.sol
-
-Spawning server...
-Initializing...
-Opening file...
-Sending request...
-
-{
-  "error": {
-    "code": -32603,
-    "message": "Unhandled exception: /solidity/libsolidity/interface/CompilerStack.cpp(1249): Throw in function const SourceUnit &solidity::frontend::CompilerStack::ast(const std::string &) const\nDynamic exception type: boost::wrapexcept<solidity::langutil::InternalCompilerError>\nstd::exception::what: Parsing not yet performed.\n[solidity::util::tag_comment*] = Parsing not yet performed.\n"
-  },
-  "id": 2,
-  "jsonrpc": "2.0"
-}
-```
-
-```
-  server solc --lsp
-  method textDocument/semanticTokens/full
-  file /Users/meek/developer/argotorg/lsp-ice/Pool.sol
-
-Spawning server...
-Initializing...
-Opening file...
-Sending request...
-
-{
-  "error": {
-    "code": -32603,
-    "message": "Unhandled exception: /solidity/libsolidity/interface/CompilerStack.cpp(1249): Throw in function const SourceUnit &solidity::frontend::CompilerStack::ast(const std::string &) const\nDynamic exception type: boost::wrapexcept<solidity::langutil::InternalCompilerError>\nstd::exception::what: Parsing not yet performed.\n[solidity::util::tag_comment*] = Parsing not yet performed.\n"
-  },
-  "id": 2,
-  "jsonrpc": "2.0"
-}
+# InternalCompilerError 1 — rename
+lsp-bench replay --server "solc --lsp" --project . --input '{"id":1,"jsonrpc":"2.0","method":"textDocument/rename","params":{"newName":"NewName","position":{"character":15,"line":109},"textDocument":{"uri":"file:///path/to/solc-lsp-ice/src/libraries/Pool.sol"}}}'
+# InternalCompilerError 2 — semantic tokens
+lsp-bench replay --server "solc --lsp" --project . --input '{"id":1,"jsonrpc":"2.0","method":"textDocument/semanticTokens/full","params":{"textDocument":{"uri":"file:///path/to/solc-lsp-ice/src/libraries/Pool.sol"}}}'
 ```
