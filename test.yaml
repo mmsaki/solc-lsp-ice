@@ -1,7 +1,7 @@
 project: .
 file: Pool.sol
-line: 109
-col: 15
+line: 3
+col: 8
 iterations: 1
 warmup: 1
 timeout: 10
@@ -14,6 +14,25 @@ benchmarks:
   - initialize
   - textDocument/rename # ICE
   - textDocument/semanticTokens/full # ICE
+  # - textDocument/diagnostic
+  # - textDocument/definition
+  # - textDocument/declaration
+  # - textDocument/typeDefinition
+  # - textDocument/implementation
+  # - textDocument/hover
+  # - textDocument/references
+  # - textDocument/completion
+  # - textDocument/signatureHelp
+  # - textDocument/prepareRename
+  # - textDocument/documentSymbol
+  # - textDocument/documentLink
+  # - textDocument/formatting
+  # - textDocument/foldingRange
+  # - textDocument/selectionRange
+  # - textDocument/codeLens
+  # - textDocument/inlayHint
+  # - textDocument/documentColor
+  # - workspace/symbol
   
 methods:
   textDocument/rename:
