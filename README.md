@@ -1,8 +1,6 @@
 # Solc LSP InternalCompilerError
 
-```sh
-lsp-bench replay --server "solc --lsp" --project v4-core --input '{"id":1,"jsonrpc":"2.0","method":"textDocument/rename","params":{"newName":"NewName","position":{"character":15,"line":109},"textDocument":{"uri":"file:///Users/meek/developer/mmsaki/solidity-lsp-benchmarks/v4-core/src/libraries/Pool.sol"}}}'
-```
+<https://youtu.be/AhqayOtYzWs>
 
 Install lsp-bench from [github releases](https://github.com/mmsaki/solidity-lsp-benchmarks/releases/tag/v0.2.2) or crates.io
 
@@ -10,13 +8,19 @@ Install lsp-bench from [github releases](https://github.com/mmsaki/solidity-lsp-
 cargo install lsp-bench
 ```
 
-## Step Up
+## Set Up
 
-1. Clone uniswap/v4-core in the root here
+1. Clone this repo with submodules
 
 ```
-git clone https://github.com/uniswap/v4-core.git
+git clone --recurse-submodules https://github.com/mmsaki/solc-lsp-ice.git
 ```
+
+> If you already cloned without `--recurse-submodules`, run:
+>
+> ```
+> git submodule update --init --recursive
+> ```
 
 2. Run LSP benchmark
 
@@ -24,13 +28,16 @@ git clone https://github.com/uniswap/v4-core.git
 lsp-bench --config test.yaml
 ```
 
-or
+or use the `replay` command directly:
+
+> **Note:** If using the CLI commands below, update the `uri` path to match your local system.
+> Replace `/path/to/solc-lsp-ice` with the absolute path to where you cloned this repo.
 
 ```sh
 # InternalCompilerError 1
-lsp-bench replay --server "solc --lsp" --project v4-core --input '{"id":1,"jsonrpc":"2.0","method":"textDocument/rename","params":{"newName":"NewName","position":{"character":15,"line":109},"textDocument":{"uri":"file:///Users/meek/developer/mmsaki/solidity-lsp-benchmarks/v4-core/src/libraries/Pool.sol"}}}'
+lsp-bench replay --server "solc --lsp" --project v4-core --input '{"id":1,"jsonrpc":"2.0","method":"textDocument/rename","params":{"newName":"NewName","position":{"character":15,"line":109},"textDocument":{"uri":"file:///path/to/solc-lsp-ice/v4-core/src/libraries/Pool.sol"}}}'
 # InternalCompilerError 2
-lsp-bench replay --server "solc --lsp" --project v4-core --input "{\"id\":1,\"jsonrpc\":\"2.0\",\"method\":\"textDocument/semanticTokens/full\",\"params\":{\"textDocument\":{\"uri\":\"file:///Users/meek/developer/argotorg/lsp-ice/v4-core/src/libraries/Pool.sol\"}}}"
+lsp-bench replay --server "solc --lsp" --project v4-core --input '{"id":1,"jsonrpc":"2.0","method":"textDocument/semanticTokens/full","params":{"textDocument":{"uri":"file:///path/to/solc-lsp-ice/v4-core/src/libraries/Pool.sol"}}}'
 ```
 
 Responses
